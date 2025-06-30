@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ 'Edit' if user else 'Tambah' }} User</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+  <h3>{{ 'Edit' if user else 'Tambah' }} User</h3>
+
+  {% if error %}
+  <div class="alert alert-danger">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST">
+    <div class="mb-3">
+      <label class="form-label">Nama</label>
+      <input type="text" name="nama" class="form-control" value="{{ user[1] if user else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input type="text" name="username" class="form-control" value="{{ user[2] if user else '' }}" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Role</label>
+      <select name="role" class="form-select" required>
+        <option value="admin" {% if user and user[4] == 'admin' %}selected{% endif %}>Admin</option>
+        <option value="teknisi" {% if user and user[4] == 'teknisi' %}selected{% endif %}>Teknisi</option>
+        <option value="supervisor" {% if user and user[4] == 'supervisor' %}selected{% endif %}>Supervisor</option>
+        <option value="manajemen" {% if user and user[4] == 'manajemen' %}selected{% endif %}>Manajemen</option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">
+        Password {% if user %}(Isi hanya jika ingin mengganti){% endif %}
+      </label>
+      <input type="password" name="password" class="form-control" {% if not user %}required{% endif %}>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Simpan</button>
+    <a href="/users" class="btn btn-secondary">Batal</a>
+  </form>
+</div>
+</body>
+</html>

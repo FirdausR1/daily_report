@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Input Laporan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f8f9fa;
+    }
+    .sidebar {
+      min-height: 100vh;
+      background-color: #6a11cb;
+      background-image: linear-gradient(315deg, #6a11cb 0%, #2575fc 74%);
+      color: white;
+    }
+    .sidebar .nav-link {
+      color: white;
+    }
+    .sidebar .nav-link:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 0.375rem;
+    }
+    @media (min-width: 768px) {
+      .sidebar-fixed {
+        position: fixed;
+        width: 250px;
+      }
+      .content {
+        margin-left: 250px;
+        padding: 2rem;
+      }
+    }
+    @media (max-width: 767.98px) {
+      .sidebar-fixed {
+        position: relative;
+        width: 100%;
+      }
+      .content {
+        margin: 0;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="d-md-flex">
+  <div class="sidebar sidebar-fixed p-3">
+    <div class="text-center">
+    <img src="/static/logo.webp" alt="Logo PT Geo Dipa Energi" style="height:90px;" class="mb-2">
+    <h5 class="text-white">PT Geo Dipa Energi</h5>
+    <hr class="bg-white w-100">
+  </div>
+    <hr>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="/"> <i class="fas fa-tachometer-alt me-2"></i>Dashboard</a>
+      <a class="nav-link" href="/laporan"> <i class="fas fa-table me-2"></i>Lihat Laporan</a>
+      <a class="nav-link" href="/input"> <i class="fas fa-edit me-2"></i>Input Laporan</a>
+      <a class="nav-link" href="/logout"> <i class="fas fa-sign-out-alt me-2"></i>Logout</a>
+    </nav>
+  </div>
+
+  <div class="content flex-grow-1">
+    <h3>Input Laporan Harian</h3>
+    <form method="POST">
+      <div class="mb-3">
+        <label class="form-label">Hari</label>
+        <input class="form-control" name="hari" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Tanggal</label>
+        <input type="date" class="form-control" name="tanggal" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Uraian</label>
+        <textarea class="form-control" name="uraian"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Jenis Pekerjaan</label>
+        <select class="form-select" name="jenis">
+          <option>Preventive</option>
+          <option>Predictive</option>
+          <option>Corrective</option>
+          <option>Emergency</option>
+          <option>Refurbishment</option>
+          <option>Modification</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Equipment</label>
+        <input class="form-control" name="equipment">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-select">
+          <option>Complete</option>
+          <option>On Progress</option>
+          <option>Pending</option>
+          <option>Failed</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Keterangan</label>
+        <input class="form-control" name="keterangan">
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Catatan</label>
+        <input class="form-control" name="catatan">
+      </div>
+      <div class="d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Simpan</button>
+        <a href="/" class="btn btn-secondary">Kembali</a>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>

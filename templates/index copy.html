@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-4">
+  <h3>Dashboard <span class="badge bg-primary">{{ role|capitalize }}</span></h3>
+  <p>Selamat datang, <strong>{{ username }}</strong>!</p>
+
+  {% if role == 'teknisi' %}
+    <a href="/input" class="btn btn-success mb-3">+ Input Laporan</a>
+  {% endif %}
+
+  <a href="/laporan" class="btn btn-outline-secondary mb-3">📄 Lihat Laporan</a>
+  <a href="/export-excel" class="btn btn-outline-primary mb-3">📥 Download Laporan</a>
+  {% if role == 'admin' %}
+  <a href="/users" class="btn btn-outline-dark mb-3">👤 Kelola Pengguna</a>
+  {% endif %}
+
+  <h5 class="mt-4">Statistik Laporan</h5>
+  <p><strong>Total Laporan:</strong> {{ total_laporan }}</p>
+  {% if role == 'admin' %}
+  <p><strong>Total User:</strong> {{ total_user }}</p>
+  {% endif %}
+
+  <table class="table table-bordered mt-3">
+    <thead class="table-light">
+      <tr><th>Jenis Pekerjaan</th><th>Jumlah</th></tr>
+    </thead>
+    <tbody>
+      {% for jenis, jumlah in ringkasan %}
+      <tr><td>{{ jenis }}</td><td>{{ jumlah }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <canvas id="chartLaporan" height="100"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const ctx = document.getElementById('chartLaporan').getContext('2d');
+    const chartLaporan = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: {{ ringkasan | map(attribute=0) | list | tojson }},
+        datasets: [{
+          label: 'Jumlah Laporan',
+          data: {{ ringkasan | map(attribute=1) | list | tojson }},
+          backgroundColor: ['#0d6efd', '#dc3545', '#ffc107'],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: { y: { beginAtZero: true } }
+      }
+    });
+  </script>
+h5 class="mt-4">Grafik Persentase Jenis Pekerjaan</h5>
+<canvas id="pieChartLaporan" height="200"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const barCtx = document.getElementById('chartLaporan').getContext('2d');
+  const pieCtx = document.getElementById('pieChartLaporan').getContext('2d');
+
+  const jenisLabels = {{ ringkasan | map(attribute=0) | list | tojson }};
+  const jumlahData = {{ ringkasan | map(attribute=1) | list | tojson }};
+
+  // Bar Chart
+  new Chart(barCtx, {
+    type: 'bar',
+    data: {
+      labels: jenisLabels,
+      datasets: [{
+        label: 'Jumlah Laporan',
+        data: jumlahData,
+        backgroundColor: ['#0d6efd', '#dc3545', '#ffc107', '#198754', '#6f42c1', '#0dcaf0'],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Pie Chart
+  new Chart(pieCtx, {
+    type: 'pie',
+    data: {
+      labels: jenisLabels,
+      datasets: [{
+        data: jumlahData,
+        backgroundColor: ['#0d6efd', '#dc3545', '#ffc107', '#198754', '#6f42c1', '#0dcaf0'],
+        borderColor: '#fff',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'right'
+        }
+      }
+    }
+  });
+</script>
+  <a href="/logout" class="btn btn-danger mt-4">Logout</a>
+</div>
+</body>
+</html>
